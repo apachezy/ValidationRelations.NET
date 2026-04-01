@@ -1,4 +1,6 @@
-﻿namespace ValidationRelations.Infrastructure
+﻿using System;
+
+namespace ValidationRelations.Infrastructure
 {
     // 类型比较帮助类
     // 这个 helper 解决几个坑：
@@ -54,6 +56,38 @@
                 ComparisonOperator.LessOrEqual    => compareResult <= 0,
                 _                                 => false
             };
+        }
+
+        /// <summary>
+        /// 容差感知的浮点数比较，消除 IEEE 754 精度误差。
+        /// 使用相对容差 1e-12，最小绝对容差为 <see cref="double.Epsilon"/>。
+        /// </summary>
+        internal static int CompareDoubleTolerant(double a, double b)
+        {
+            var diff = a - b;
+            var magnitude = Math.Max(Math.Abs(a), Math.Abs(b));
+            var tolerance = Math.Max(magnitude * 1e-12, double.Epsilon);
+
+            if (Math.Abs(diff) <= tolerance) return 0;
+
+            return diff > 0 ? 1 : -1;
+        }
+
+        /// <summary>
+        /// 容差感知的 decimal 比较，消除浮点转换和除法运算引入的精度误差。
+        /// 使用相对容差 1e-12，最小绝对容差 1e-15。
+        /// </summary>
+        internal static int CompareDecimalTolerant(decimal a, decimal b)
+        {
+            var diff = a - b;
+            var magnitude = Math.Max(Math.Abs(a), Math.Abs(b));
+            var tolerance = magnitude > 0m
+                ? Math.Max(magnitude * 0.000000000001m, 0.000000000000001m)
+                : 0.000000000000001m;
+
+            if (Math.Abs(diff) <= tolerance) return 0;
+
+            return diff > 0m ? 1 : -1;
         }
     }
 }

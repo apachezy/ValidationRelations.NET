@@ -76,7 +76,7 @@ namespace ValidationRelations.Infrastructure
             {
                 var leftValue  = Convert.ToDouble(left,  CultureInfo.InvariantCulture);
                 var rightValue = Convert.ToDouble(right, CultureInfo.InvariantCulture);
-                return leftValue.CompareTo(rightValue);
+                return ComparisonHelper.CompareDoubleTolerant(leftValue, rightValue);
             }
 
             var leftInteger  = Convert.ToDecimal(left,  CultureInfo.InvariantCulture);

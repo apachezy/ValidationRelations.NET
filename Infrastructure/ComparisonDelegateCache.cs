@@ -18,6 +18,13 @@ namespace ValidationRelations.Infrastructure
 
         private static Func<object, object, int>? BuildComparer(Type leftType, Type rightType)
         {
+            // 同类型浮点数 → 容差比较（消除 IEEE 754 精度误差）
+            if (leftType == rightType && IsFloatingPoint(leftType))
+            {
+                return (l, r) => ComparisonHelper.CompareDoubleTolerant(
+                    Convert.ToDouble(l), Convert.ToDouble(r));
+            }
+
             // 同类型且实现 IComparable
             if (leftType == rightType && typeof(IComparable).IsAssignableFrom(leftType))
             {
@@ -40,6 +47,14 @@ namespace ValidationRelations.Infrastructure
             // 数值类型
             if (IsNumeric(leftType) && IsNumeric(rightType))
             {
+                // 含浮点类型 → 容差比较
+                if (IsFloatingPoint(leftType) || IsFloatingPoint(rightType))
+                {
+                    return (l, r) => ComparisonHelper.CompareDoubleTolerant(
+                        Convert.ToDouble(l), Convert.ToDouble(r));
+                }
+
+                // 纯整数/decimal → 精确 decimal 比较
                 var left  = Expression.Parameter(typeof(object), "l");
                 var right = Expression.Parameter(typeof(object), "r");
 
@@ -88,6 +103,11 @@ namespace ValidationRelations.Infrastructure
                 || type == typeof(float)
                 || type == typeof(double)
                 || type == typeof(decimal);
+        }
+
+        private static bool IsFloatingPoint(Type type)
+        {
+            return type == typeof(float) || type == typeof(double);
         }
     }
 }
