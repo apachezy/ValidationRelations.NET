@@ -216,24 +216,3 @@ MIT License
 
 欢迎提交 Issue 或 Pull Request。
 
----
-
-如果你愿意，我可以再帮你做一个 **Github 开源项目的最终打磨版 README**，通常会再加 4 个东西，会让项目看起来非常专业：
-
-1️⃣ **README 徽章（Badge）**
-例如：
-
-```
-.NET Version
-License
-Build Status
-NuGet
-```
-
-2️⃣ **验证规则表格**（比列表更清晰）
-
-3️⃣ **简单架构图**
-
-4️⃣ **完整示例 Demo**
-
-做完这些之后，你这个项目在 Github 上的观感会非常接近成熟开源库。
