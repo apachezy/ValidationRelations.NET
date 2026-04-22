@@ -177,6 +177,7 @@ LessThanNow
 
 ```id="hyl5mz"
 EqualToAny
+AllowedValues
 ```
 
 ### 条件验证
