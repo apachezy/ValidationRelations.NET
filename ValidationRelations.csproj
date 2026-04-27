@@ -7,13 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Include="tests\ValidationRelations.Tests\ValidationRelations.Tests.csproj" />
+      <Compile Remove="tests\**" />
+      <EmbeddedResource Remove="tests\**" />
+      <None Remove="tests\**" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="xunit.assert" Version="2.9.3" />
-        <PackageReference Include="xunit.extensibility.core" Version="2.9.3" />
     </ItemGroup>
 
 </Project>
